@@ -1,13 +1,38 @@
 package handler
 
-import "github.com/labstack/echo/v4"
+import (
+	"github.com/chigatu/service/pkg/service"
+	"github.com/gin-gonic/gin"
+)
 
-func InitRoutes() *echo.Echo {
-	router := echo.New()
-	segment := router.Group("/segment")
+type Handler struct {
+	services *service.Service
+}
+
+func NewHandler(services *service.Service) *Handler {
+	return &Handler{services: services}
+}
+
+func (h Handler) InitRoutes() *gin.Engine {
+	router := gin.New()
+
+	user := router.Group("/user")
 	{
-		segment.POST("/", func(ctx echo.Context) error { return nil })
-		segment.GET("/", func(ctx echo.Context) error { return nil })
+		user.POST("/user-id")
+	}
+
+	segment := router.Group("/slug")
+	{
+		segmentId := segment.Group("/segmentId")
+		{
+			segmentId.POST("/:id")
+			segmentId.DELETE("/:id")
+		}
+
+		userSegment := router.Group("userSegment")
+		{
+			userSegment.GET("/userSegment")
+		}
 	}
 	return router
 }
