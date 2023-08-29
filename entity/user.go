@@ -1,4 +1,4 @@
-package User
+package entity
 
 type User struct {
 	Id    int       `json:"-"`
