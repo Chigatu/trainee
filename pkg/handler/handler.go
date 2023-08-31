@@ -16,21 +16,17 @@ func NewHandler(services *service.Service) *Handler {
 func (h Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
-	user := router.Group("/user")
-	{
-		user.POST("/user-id")
-	}
-
 	segment := router.Group("/slug")
 	{
 		segmentId := segment.Group("/segmentId")
 		{
-			segmentId.POST("/:id")
-			segmentId.DELETE("/:id")
+			segmentId.POST("/", h.CreateSegment)
+			segmentId.DELETE("/", h.CreateSegment)
 		}
 
 		userSegment := router.Group("userSegment")
 		{
+			userSegment.POST("/userSegment")
 			userSegment.GET("/userSegment")
 		}
 	}
